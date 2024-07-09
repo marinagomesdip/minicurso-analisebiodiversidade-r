@@ -1,10 +1,10 @@
 # Minicurso Análise de Dados de Biodiversidade no R
 ## Informações sobre o Minicurso
 
-Ministrante
+**Ministrante**
 Me. Marina Gomes
 
-Duração
+**Duração**
 8 horas
 
 Resumo 
