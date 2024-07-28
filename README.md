@@ -15,8 +15,8 @@ O minicurso consiste em uma introdução teórico-prática para analisar dados n
 
 ## Instruções aos participantes
 
-**Hardware**  
-Será necessário que todos usem seus notebooks ou desktops
+**Requisitos básicos**  
+Será necessárioa utilização de notebook ou desktop
 
 **Softwares**  
 Instalar a versão mais recente
