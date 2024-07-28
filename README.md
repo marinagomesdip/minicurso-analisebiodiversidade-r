@@ -30,8 +30,6 @@ Instalar a versão mais recente
 
 [slides](https://mauriciovancine.github.io/workshop-r-introduction/01_slides/slides)
 
----
-
 ## Scripts
 
 [0. Pacotes](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/00_script_r_introduction.R) <br>
