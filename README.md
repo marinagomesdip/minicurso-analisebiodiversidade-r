@@ -25,3 +25,15 @@ Instalar a versão mais recente
 2. [RStudio (2022.07.2-576)](https://www.rstudio.com)
 
 - [Vídeo de instalação do R e do RStudio](https://youtu.be/l1bWvZMNMCM)
+
+## Slides
+
+[slides](https://mauriciovancine.github.io/workshop-r-introduction/01_slides/slides)
+
+---
+
+## Scripts
+
+[0. Pacotes](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/00_script_r_introduction.R) <br>
+[2. tidyverse](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/02_script_r_introduction.R) <br>
+[3. Visualização de dados](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/03_script_r_introduction.R)
