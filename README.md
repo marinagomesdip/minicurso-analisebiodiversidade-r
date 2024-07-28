@@ -28,7 +28,7 @@ Instalar a versão mais recente
 
 ## Slides
 
-[slides]([https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing])
+[slides](https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing)
 
 ## Scripts
 
