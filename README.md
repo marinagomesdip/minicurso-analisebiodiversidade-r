@@ -12,7 +12,7 @@ Me. Marina Gomes
 **Data**
 
 03/09 à 06/09 
-De 8h às 10h
+de 8h às 10h
 
 **Resumo**
 
