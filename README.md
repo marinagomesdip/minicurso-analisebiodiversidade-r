@@ -25,7 +25,7 @@ Será necessárioa utilização de notebook ou desktop
 
 ## Slides
 
-[Aula 1]([https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing](https://drive.google.com/file/d/1GAnSa_vhZHbPw41DoK3bPzCycYeTz5Pt/view?usp=sharing))
+[Aula 1]([https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing](https://drive.google.com/file/d/1GAnSa_vhZHbPw41DoK3bPzCycYeTz5Pt/view?usp=sharing)
 
 ## Scripts
 
