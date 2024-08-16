@@ -23,17 +23,9 @@ O minicurso consiste em uma introdução teórico-prática para analisar dados n
 **Requisitos básicos**  
 Será necessárioa utilização de notebook ou desktop
 
-**Softwares**  
-Instalar a versão mais recente
-
-1. [R (4.2)](https://www.r-project.org)
-2. [RStudio (2022.07.2-576)](https://www.rstudio.com)
-
-- [Vídeo de instalação do R e do RStudio](https://youtu.be/l1bWvZMNMCM)
-
 ## Slides
 
-[slides](https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing)
+[Aula 1]([https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing](https://drive.google.com/file/d/1GAnSa_vhZHbPw41DoK3bPzCycYeTz5Pt/view?usp=sharing))
 
 ## Scripts
 
