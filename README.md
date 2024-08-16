@@ -29,10 +29,10 @@ Será necessárioa utilização de notebook ou desktop
 
 ## Scripts
 
-[0. Pacotes](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/00_script_r_introduction.R) <br>
-[2. tidyverse](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/02_script_r_introduction.R) <br>
-[3. Visualização de dados](https://github.com/mauriciovancine/workshop-r-introduction/blob/master/02_scripts/03_script_r_introduction.R)
+[0. Pacotes]() <br>
+[2. tidyverse]() <br>
+[3. Visualização de dados]()
 
 ## Tutoriais
 
-[slides](https://drive.google.com/drive/folders/1gwxsxLwlUaxPxDQdKNXShXwM64AxJRcu?usp=sharing)
+[Tutorial Instalação e Conexão GitHub](https://drive.google.com/file/d/1eor5LsZhal5-l2ZYjXWPTXCNQyFm3S1n/view?usp=drive_link)
