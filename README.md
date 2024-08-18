@@ -30,8 +30,7 @@ Será necessárioa utilização de notebook ou desktop
 ## Scripts
 
 [Aula 2 - Gráficos](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%20%202%20-%20Gr%C3%A1ficos.R) <br>
-[2. tidyverse]() <br>
-[3. Visualização de dados]()
+[Aula 3 - Dados geoespaciais](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%203%20-%20Dados%20Geoespaciais.R) <br>
 
 ## Tutoriais
 
