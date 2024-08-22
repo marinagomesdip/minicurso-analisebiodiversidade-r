@@ -182,21 +182,7 @@ temp_BR <- crop(temp, extensao_brasil)
 #Plotar uma espécie no mapa de temp
 
 #usar GBIF
-install.packages('rgibf')
 
-library(rgbif)
-
-gbif <- occ_data(scientificName = "Oxysarcodexia amorosa")
-
-occ <- gbif$data
-
-occ <- occ %>%
-  dplyr::select(decimalLatitude, decimalLongitude) %>%
-  dplyr::filter(!is.na(decimalLatitude))
-
-occ <- as.data.frame(occ)
-
-occ <- st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), crs = 4326, remove = FALSE)
 
 map3 <- map2 +
   tm_shape(species) +
