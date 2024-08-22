@@ -8,15 +8,15 @@
 
 # ---------------------------------------------------------------------------- #
 
-# 1. INSTALANDO PACOTES:
+# 1. INSTALANDO PACOTES: -------------------------------------------------------
 #vai ser necessário instalar o rtools tbm!!
 install.packages('tidyverse')   # instalando o pacote 'tidyverse'
 
-# 2. CARREGANDO PACOTES:
+# 2. CARREGANDO PACOTES: --------------------------------------------------------------
 library(tidyverse)                # Carregando o pacote.
 
-# 3. IMPORTANDO DADOS
-#nessa etapa, você pode usar bancos de dados já disponíveis no R
+# 3. IMPORTANDO DADOS: ----------------------------------------------------------------
+#nessa etapa, vamos usar bancos de dados já disponíveis no R
 
 #instalar o pacote que fornece bases de dados gratuitas no R
 install.packages('dados')   # instalando o pacote 'dados'
@@ -24,12 +24,12 @@ install.packages('dados')   # instalando o pacote 'dados'
 #transformar a base em um objeto para podermos trabalhar com ela
 pinguins <- dados::pinguins    # atribuindo a base a um objeto utilizando <-
 
-# 4. ENTENDENDO SEU BANCO DE DADOS
+# 4. ENTENDENDO SEU BANCO DE DADOS: ----------------------------------------------------
 pinguins                     # chamando o objeto para ver suas características
 
-# 5. COMEÇANDO A FAZER PERGUNTAS
+# 5. COMEÇANDO A FAZER PERGUNTAS:-------------------------------------------------------
 
-#PERGUNTA 1: PINGUINS COM MAIOR MASSA CORPORAL SÃO AQUELES QUE TEM BICO MAIOR?
+# 5.1 PERGUNTA 1: PINGUINS COM MAIOR MASSA CORPORAL SÃO AQUELES QUE TEM BICO MAIOR? ----
 #Vamos fazer um gráfico:
 
 ggplot(data = pinguins) +         # para chamar a função, tem que especificar o objeto
@@ -52,7 +52,7 @@ ggsave("Grafico1.png",     # nome do arquivo a ser salvo
        dpi = 300)          # qualidade da imagem
 
 
-#PERGUNTA 2: A RELAÇÃO MAIOR MASSA CORPORAL COM MAIOR BICO VARIA COM A ESPÉCIE?
+# 5.2 PERGUNTA 2: A RELAÇÃO MAIOR MASSA CORPORAL COM MAIOR BICO VARIA COM A ESPÉCIE? ----
 #Para responder a essa pergunta, precisamos acrescentar uma terceira variável ao gráfico
 #Podemos fazer isso com COR, TRANSPARÊNCIA, TAMANHO ou FORMATO dos pontos.
 #Vamos ver os 3 exemplos:
@@ -102,11 +102,11 @@ ggplot(data = pinguins) +
              size = 2,
              alpha = 0.9)
 
-#ERRO COMUNS:
+# 5.3 ERRO COMUNS: ----------------------------------------------------------------------
 ggplot(data = pinguins)       
 +  geom_point(mapping = aes(x = massa_corporal, y = comprimento_bico, size = especie))
 
-#DiCAS para deixar o gráfico mais visual:
+# 5.4 DiCAS para deixar o gráfico mais visual: ------------------------------------------
 
 #Você pode mudar o "tema" do gráfico:
 ggplot(data = pinguins) +       
@@ -131,32 +131,21 @@ ggplot(data = pinguins) +
   theme_bw()
 
 
-
+# 5.5 PRÁTICA 1 ------------------------------------------------------------------------
 #                           PAUSA PARA PRÁTICA 1                              #
 
 
 
-#Vamos agora explorar os tipos de gráficos que podemos produzir com diferentes geoms
+# 5.6 Vamos agora explorar os tipos de gráficos que podemos produzir com diferentes geoms ----
 
-#Alguns geoms vão fazer mais sentido para diferentes tipos de variáveis
-ggplot(data = pinguins) + 
-  geom_point(mapping = aes(x = massa_corporal, y = especie))
-#O resumo do ggplot2 é muito bom para ajudar na seleção de qual geom usar
-
+#Voltemos para nossa pergunta inicial:
+#Pinguins com maior massa corporal apresentam bicos maiores? 
 ggplot(data = pinguins) + 
   geom_point(mapping = aes(x = massa_corporal, y = comprimento_bico))
 
-#utilizando um geom diferente para o mesmo gráfico:
+#Podemos usar outros geoms para responder essa pergunta:
 ggplot(data = pinguins) + 
   geom_smooth(mapping = aes(x = massa_corporal, y = comprimento_bico))
-
-#também podemos mexer nas configurações de aesthetics aqui, mas pra cada geom será
-#diferente
-
-ggplot(data = pinguins) + 
-  geom_smooth(mapping = aes(x = massa_corporal, y = comprimento_bico,
-                            linetype = especie),   #aqui podemos ajustar o tipo de linha
-              color = "red")                       #cor geral do gráfico
 
 #o mais legal do ggplot2 é que podemos combinar mais de um geom no mesmo gráfico!!
 ggplot(data = pinguins) + 
@@ -168,36 +157,65 @@ ggplot(data = pinguins, mapping = aes(x = massa_corporal, y = comprimento_bico))
   geom_point() + 
   geom_smooth()
 
+#também podemos mexer nas configurações de aesthetics aqui, mas pra cada geom será
+#diferente
+#A relação massa corporal - comprimento do bico é igual em todas as espécies?
+ggplot(data = pinguins) + 
+  geom_smooth(mapping = aes(x = massa_corporal, y = comprimento_bico,
+                            linetype = especie),   #aqui podemos ajustar o tipo de linha
+              color = "red")                       #cor geral do gráfico
+
 #podemos ir alterando e configurando o gráfico dependendo do objetivo do trabalho
+#Qual a relação massa corporal - comprimento bico para os pinguins como um todo e qual
+#a variação por espécie?
 ggplot(data = pinguins, mapping = aes(x = massa_corporal, y = comprimento_bico)) + 
   geom_point(mapping = aes(color = especie)) + # classificando apenas os pontos por especie
   geom_smooth()
 
+#deixando o gráfico mais visual:
 ggplot(data = pinguins, mapping = aes(x = massa_corporal, y = comprimento_bico)) + 
   geom_point(mapping = aes(color = especie)) + 
   geom_smooth(se = FALSE,       # removendo a "sombra" da linha
               color = "black")  # mudando a cor da linha
 
 #podemos inclusive incluir mais de uma variável no gráfico mudando as cores de cada uma
+#Qual a relação entre comprimento e profundidade do bico com a massa corporal?
 ggplot(data = pinguins) + 
-  geom_point(mapping = aes(x = massa_corporal, y = comprimento_bico), color = "black") +
-  geom_point(mapping = aes(x = massa_corporal, y = profundidade_bico), color = "red")
+  geom_point(mapping = aes(x = massa_corporal, y = comprimento_bico), color = "black") +    #adicionamos uma camada com a variável comprimento
+  geom_point(mapping = aes(x = massa_corporal, y = profundidade_bico), color = "red") +     #adicionamos outra cmada com a variável profundidade
+  labs(x = "Massa Corporal", y = "Comprimento / Profundidade do bico")                      #usamos a função labs para renomear os eixos
 
-#exemplo de gráfico de variável quantitativa x qualitativa
+
+
+#Alguns geoms vão fazer mais sentido para diferentes tipos de variáveis
+#Pergunta: A massa corporal difere entre as espécies?
+ggplot(data = pinguins) + 
+  geom_point(mapping = aes(x = massa_corporal, y = especie))
+#O resumo do ggplot2 é muito bom para ajudar na seleção de qual geom usar
+
+
+#Exemplo de gráfico de variável quantitativa x qualitativa
+#A massa corporal difere entre as espécies?
 ggplot(data = pinguins, mapping = aes(x = especie, y = massa_corporal)) + 
   geom_boxplot()
 
+#A massa corporal dos pinguins no geral variou com os anos??
 ggplot(data = pinguins, mapping = aes(x = ano, y = massa_corporal)) + 
   geom_boxplot()
+#repare que este gráfico não responde a pergunta que fizemos, porque o R está interpretado
+#ano como uma variável contínua
 
+#podemos discretizar uma variável contínua (lembra das aulas teóricas?)
 ggplot(data = pinguins, mapping = aes(x = factor(ano), y = massa_corporal)) + #usando "factor" o x fica discretizado
   geom_boxplot()
 
+
 #exemplo de gráfico com duas variáveis qualitativas
+#Todos os pinguins estão presentes em todas as ilhas?
 ggplot(data = pinguins, mapping = aes(x = especie, y = ilha)) + 
   geom_jitter()
 
-
+# 5.7 - Prática 2 ----------------------------------------------------------------------
 #                           PAUSA PARA PRÁTICA 2                              #
 
 
@@ -209,7 +227,7 @@ ggplot(data = atmosfera, mapping = aes(x = factor(ano), y = temp_superficie)) +
   geom_violin() + 
   theme_bw()
 
-#PERGUNTA 3: A massa corporal de pinguins fêmeas varia por espécie?
+# 5.8 PERGUNTA: A massa corporal de pinguins fêmeas varia por espécie? -------------------
 ggplot(data = pinguins, mapping = aes(x = especie, y = massa_corporal,
                                       color = sexo)) + 
   geom_boxplot()
@@ -220,7 +238,7 @@ ggplot(data = subset(pinguins, sexo == "fêmea"),   #usando subset para filtrar 
   geom_boxplot()
 
 
-
+# 5.9 - Prática 3 ------------------------------------------------------------------------
 #                           PAUSA PARA PRÁTICA 3                              #
 
 
@@ -230,7 +248,7 @@ ggplot(data = subset(pinguins, ilha == "Dream" & !is.na(sexo)), #usando duas reg
   geom_boxplot()
 
 
-#PERGUNTA 4: O número de espécimes amostrados foi igual entre os sexos?
+# 5.10 PERGUNTA: O número de espécimes amostrados foi igual entre os sexos? --------------
 ggplot(data = pinguins) + 
   geom_bar(mapping = aes(x = sexo))    # o geom_bar produz um histograma, ou seja, é a quantidade de vezes que algo aparece no dataset
 
@@ -257,7 +275,11 @@ ggplot(data = pinguins) +
            position = "fill") +  # ou também igualar os valores transformando em proporções
   labs(x = "sexo", y = "proporção de espécimes")
 
+
+# 5.11 - Prática 4 -----------------------------------------------------------------------
 #Para a prática 4, vamos precisar de um dataset externo (poderia ser a planilha da sua pesquisa por exemplo)
+
+#Baixar planilha no github do curso!!
 grilos <- read_csv("./Dados/Grilos_saltos.csv")
 
 
@@ -283,3 +305,5 @@ ggplot(data = dados, mapping = aes(x = sexo, y = comprimento_corpo)) +
 ggplot(data = dados, mapping = aes(x = sexo, y = comprimento_corpo,
                                    color = especie)) + 
   geom_boxplot()
+
+# 5.12 - FIMMMMMM BORA LANCHAR E SER FELIZ AGORA QUE VOCÊ SABE FAZER GRÁFICOS NO R ----

@@ -8,14 +8,14 @@
 
 # ---------------------------------------------------------------------------- #
 
-# 1. INSTALANDO PACOTES: 
+# 1. INSTALANDO PACOTES: -------------------------------------------------------------
 install.packages('sf')   # instalando o pacote 'sf'
 
-# 2. CARREGANDO PACOTES:
+# 2. CARREGANDO PACOTES: -------------------------------------------------------------
 library(sf)                # Carregando o pacote.
 
-# 3. CRIANDO MAPAS
-#     3.1 - Mapas com formato shp usando geobr
+# 3. CRIANDO MAPAS -------------------------------------------------------------------
+#     3.1 - Mapas com formato shp usando geobr ---------------------------------------
 
 install.packages('geobr')   # instalando o pacote 'geobr'.
 
@@ -25,7 +25,7 @@ library(geobr)                # Carregando o pacote.
 #https://github.com/ipeaGIT/geobr
 #Lembrando que os dados geobr estão no formato shp, ou seja, shapefile!!
 
-#Vamos fazer um mapa dos biomas brasileiros
+#Vamos fazer um mapa dos biomas terrestres brasileiros 
 
 # vamos usar a função 'read_country' para baixar a fronteira do BR
 BR <- geobr::read_country(year = 2020)   # 2020 é o ano do conjunto de dados. 
@@ -122,7 +122,8 @@ ggsave("Mapa_shapefile.png",     # nome do arquivo a ser salvo
        height = 8,         # altura em pixels da imagem
        dpi = 300)          # qualidade da imagem
 
-#     3.2 - Mapas com formato raster usando 
+
+#     3.2 - Mapas com formato raster usando ------------------------------------------
 
 #Vamos importar o raster da nossa pasta
 
@@ -158,7 +159,7 @@ mapa_temp
 mapa_temp <- tm_shape(temp) +
   tm_raster(palette = "Oranges",
             title = "Temperatura média anual") +
-  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "gray44")
+  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "black")
 
 mapa_temp
 
@@ -170,8 +171,27 @@ tmap_save(
 )
 
 
-# TÁ DANDO ERRO MEU SENHOR
-#Cortar apenas BR
+#     3.3 - Mapa de distribuição de espécies com shp ---------------------------------
+
+
+
+
+#     3.4 - Mapara de distribuição de espécies com raster ----------------------------
+install.packages(rgbif)
+
+library(rgbif)
+
+gbif <- occ_data(scientificName = "Oxysarcodexia amorosa")
+
+occs <- gbif$data
+
+occs <- occs %>%
+  dplyr::select(scientificName, decimalLatitude, decimalLongitude) %>%
+  dplyr::filter(!is.na(decimalLatitude))
+
+teste2 <- occs %>%
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), remove = FALSE)
+
 
 # Extensão geográfica do Brasil
 extensao_brasil <- extent(-74, -34, -34, 5)
@@ -179,12 +199,25 @@ extensao_brasil <- extent(-74, -34, -34, 5)
 # Cortar na região alvo
 temp_BR <- crop(temp, extensao_brasil)
 
-#Plotar uma espécie no mapa de temp
 
-occs <- read_csv("./Dados/dados_Oxysarcodexia.csv")
+mapa_tempBR <- tm_shape(temp_BR) +
+  tm_raster(palette = "Oranges",
+            title = "Temperatura média anual") +
+  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "black")
 
+teste <- mapa_tempBR +
+  tm_shape(teste2) +
+  tm_dots(size = 0.5)
 
+teste4 <- teste +
+  tm_shape(BR) +
+  tm_borders(lwd = 2,
+             col = "black")
 
-map3 <- map2 +
-  tm_shape(species) +
-  tm_dots(size = 0.1)
+#corrigir o posicionamento: CRS
+
+sf::st_crs(BR)
+
+#     3.5 PRÁTICA -----------------------------------------------------------------------
+
+# 4. Resumir dados de ocorrências por unidade padronizada -------------------------------
