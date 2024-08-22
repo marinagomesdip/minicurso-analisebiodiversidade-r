@@ -9,6 +9,7 @@
 # ---------------------------------------------------------------------------- #
 
 # 1. INSTALANDO PACOTES:
+#vai ser necessário instalar o rtools tbm!!
 install.packages('tidyverse')   # instalando o pacote 'tidyverse'
 
 # 2. CARREGANDO PACOTES:
