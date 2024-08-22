@@ -115,7 +115,89 @@ mapaBR.Bioma2 <- mapaBR.Bioma +
 
 mapaBR.Bioma2
 
+#Salvando o mapaBR.Bioma2, usamos uma função específica do próprio ggplot2:
+ggsave("Mapa_shapefile.png",     # nome do arquivo a ser salvo
+       plot = mapaBR.Bioma2,    # nome do objeto que você quer salvar
+       width = 10,          # largura em pixels da imagem
+       height = 8,         # altura em pixels da imagem
+       dpi = 300)          # qualidade da imagem
 
 #     3.2 - Mapas com formato raster usando 
 
-# 4. Fazendo análises com dados de coordenadas
+#Vamos importar o raster da nossa pasta
+
+#Para isso, vamos precisar do pacote raster
+install.packages('raster')
+
+library(raster)
+
+# Ler o modelo raster
+temp <- raster("./Dados/wordclim_10min_bio1.tif")
+
+#O ggplot2 não é tão fácil de usar para trabalhar com raster, então vamos usar o 
+#pacote tmap, que opera na mesma lógica, mas funciona melhor para esse tipo de dado
+
+install.packages('tmap')
+
+library(tmap)
+
+# Criar um mapa usando tmap
+tmap_mode("plot")  # Definir o modo para "plotar"
+
+mapa_temp <- tm_shape(temp) +
+  tm_raster() 
+
+mapa_temp
+
+
+mapa_temp <- tm_shape(temp) +
+  tm_raster(palette = "Oranges") 
+
+mapa_temp
+
+mapa_temp <- tm_shape(temp) +
+  tm_raster(palette = "Oranges",
+            title = "Temperatura média anual") +
+  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "gray44")
+
+mapa_temp
+
+tmap_save(
+  tm = mapa_temp, 
+  filename = "./temperatua_media.png", 
+  width = 3000, 
+  height = 2800
+)
+
+
+# TÁ DANDO ERRO MEU SENHOR
+#Cortar apenas BR
+
+# Extensão geográfica do Brasil
+extensao_brasil <- extent(-74, -34, -34, 5)
+
+# Cortar na região alvo
+temp_BR <- crop(temp, extensao_brasil)
+
+#Plotar uma espécie no mapa de temp
+
+#usar GBIF
+install.packages('rgibf')
+
+library(rgbif)
+
+gbif <- occ_data(scientificName = "Oxysarcodexia amorosa")
+
+occ <- gbif$data
+
+occ <- occ %>%
+  dplyr::select(decimalLatitude, decimalLongitude) %>%
+  dplyr::filter(!is.na(decimalLatitude))
+
+occ <- as.data.frame(occ)
+
+occ <- st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), crs = 4326, remove = FALSE)
+
+map3 <- map2 +
+  tm_shape(species) +
+  tm_dots(size = 0.1)
