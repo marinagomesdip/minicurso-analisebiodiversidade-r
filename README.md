@@ -33,6 +33,7 @@ Será necessárioa utilização de notebook ou desktop
 
 ## Práticas
 
+[Pasta Resultados](https://drive.google.com/drive/folders/1gcxnPPJU8JWBm-2Ek7fhLltbvdE6LUAK?usp=drive_link)
 [Aula 2](https://drive.google.com/file/d/1ICTJYpp_V0zw7IhIc5LrNDqc_G6-sv4k/view?usp=drive_link)
 
 ## Scripts
