@@ -26,7 +26,9 @@ Será necessárioa utilização de notebook ou desktop
 ## Slides
 
 [Aula 1](https://drive.google.com/file/d/1GAnSa_vhZHbPw41DoK3bPzCycYeTz5Pt/view?usp=drive_link)
+
 [Aula 2](https://drive.google.com/file/d/13OLXXMcH7eZDLlnnMKKl3CtRboyoulr5/view?usp=sharing)
+
 [Aula 3](https://drive.google.com/file/d/16SY17GBHTw0U_WtdGpIXlEIm7wnOSGv5/view?usp=drive_link)
 
 ## Práticas
@@ -36,6 +38,7 @@ Será necessárioa utilização de notebook ou desktop
 ## Scripts
 
 [Aula 2 - Gráficos](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%20%202%20-%20Gr%C3%A1ficos.R) <br>
+
 [Aula 3 - Dados geoespaciais](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%203%20-%20Dados%20Geoespaciais.R) <br>
 
 ## Tutoriais
