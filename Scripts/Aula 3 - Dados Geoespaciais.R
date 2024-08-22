@@ -181,7 +181,8 @@ temp_BR <- crop(temp, extensao_brasil)
 
 #Plotar uma espécie no mapa de temp
 
-#usar GBIF
+occs <- read_csv("./Dados/dados_Oxysarcodexia.csv")
+
 
 
 map3 <- map2 +
