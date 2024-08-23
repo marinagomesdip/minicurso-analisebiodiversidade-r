@@ -123,7 +123,7 @@ ggsave("Mapa_shapefile.png",     # nome do arquivo a ser salvo
        dpi = 300)          # qualidade da imagem
 
 
-#     3.2 - Mapas com formato raster usando ------------------------------------------
+#     3.2 - Mapas com formato raster ---------------------------------------------
 
 #Vamos importar o raster da nossa pasta
 
@@ -159,7 +159,8 @@ mapa_temp
 mapa_temp <- tm_shape(temp) +
   tm_raster(palette = "Oranges",
             title = "Temperatura média anual") +
-  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "black")
+  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "black") +
+  tm_compass(position = c("right", "top"), size = 2)
 
 mapa_temp
 
@@ -171,53 +172,298 @@ tmap_save(
 )
 
 
-#     3.3 - Mapa de distribuição de espécies com shp ---------------------------------
+#     3.3 - Mapa das espécies por bioma com shp ---------------------------------
 
+#Vamos fazer agora o que a maioria das pessoas precisa para um trabalho ou artigo: mapa
+#de distribuição de espécies com alguma variável (nesse caso, o bioma)
 
+#         3.3.1 - Obter dados de distribuição ----------------------------------------
 
+# Para obter os dados de distribuição, vamos usar um pacote do gbif para o R, o rgbif
 
-#     3.4 - Mapara de distribuição de espécies com raster ----------------------------
-install.packages(rgbif)
+install.packages(rgbif)                  #instalando o pacote
 
-library(rgbif)
+library(rgbif)                           #carregar o pacote
 
-gbif <- occ_data(scientificName = "Oxysarcodexia amorosa")
+#Agora, vamos usar a função do próprio pacote para obter dados de uma espécie usando o 
+#nome dela. Vou usar uma espécie de mosca como exemplo, mas você pode usar um animal que 
+#goste e/ou trabalhe e que tenha distribuição conhecida no BR!!
 
+gbif <- occ_data(scientificName = "Oxysarcodexia amorosa")      #puxa os dados do gbif da espécie OXysarcodexia amorosa
+
+#observe como chegam os dados no formato 'lista'
+gbif
+
+#agora vamos extrair o dataframe apenas, que eles chamam de 'data'
 occs <- gbif$data
 
+#Perceba que o objeto occs é gigante e tem muitas colunas que não vamos usar nessa prática
+#vamos selecionar as colunas de nosso interesse e filtrar apenas que tem coordenadas completas
+
+occs <- occs %>%                                                        # o símbolo pipe (%>%) é entendido como "então"
+  dplyr::select(scientificName, decimalLatitude, decimalLongitude) %>%  # selecionamos o nome, a latitude e a longitude de acordo com os nomes do gbif para reter apenas essas colunas
+  dplyr::filter(!is.na(decimalLatitude))                                # filtramos apenas as linhas que tem a coluna de latitude preenchida
+
+#Apesar de possuir coordenadas, esse objeto é apenas uma planilha, ele não possui
+#geometria nem CRS associado
+
+#vamos associar uma geometria de ponto as coordenadas que queremos usar:
 occs <- occs %>%
-  dplyr::select(scientificName, decimalLatitude, decimalLongitude) %>%
-  dplyr::filter(!is.na(decimalLatitude))
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), 
+           remove = FALSE)
 
-teste2 <- occs %>%
-  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"), remove = FALSE)
+#agora vamos associar um CRS a esses pontos (no caso o SIRGAS 2000, que o geobr usa!!)
+occs <- st_set_crs(occs, 4674)
 
+#         3.3.2 - Acrescentar os pontos no mapa ----------------------------------------
 
-# Extensão geográfica do Brasil
-extensao_brasil <- extent(-74, -34, -34, 5)
+#Vamos relembrar o objeto que a gente tinha montado com tudo que a gente precisa pra um mapa:
+mapaBR.Bioma2
+
+#Agora, vamos acrescentar os nossos pontos nele:
+mapaBiooc <- mapaBR.Bioma2 +                            
+  geom_sf(data = occs,                          #identificamos os pontos que baixamos
+          color = "black",                      #adicionamos cor aos pontos
+          size = 2,                             #aumentamos o tamanho dos pontos para eles ficarem visíveis
+          shape = 21,                           #escolhemos o formato do ponto
+          fill = "black",                       #colocamos o preenchimento como preto
+          show.legend = FALSE) 
+
+#Vamos ver como ficou nosso novo mapa
+mapaBiooc
+
+#Repare que como essa espécie ocorre em toda a América do Sul, alguns pontos ficaram de fora do shp
+#Mas como nosso objetivo aqui é mostrar a distribuição apenas no Brasil, vamos recortar esses pontos
+
+occs_BR <- st_intersection(occs, BR)              #Recorta os pontos com os limites do shp
+
+#Vamos agora corrigir isso mudando o objeto do mapa:
+mapaBiooc <- mapaBR.Bioma2 +                            
+  geom_sf(data = occs_BR,                       #identificamos os pontos que baixamos
+          color = "black",                      #adicionamos cor aos pontos
+          size = 2,                             #aumentamos o tamanho dos pontos para eles ficarem visíveis
+          shape = 21,                           #escolhemos o formato do ponto
+          fill = "black",                       #colocamos o preenchimento como preto
+          show.legend = FALSE) 
+
+#Verificando o resultado:
+mapaBiooc
+
+#Para salvar, usar o ggsave
+ggsave("Oxysarcodexia_biomas.png",     # nome do arquivo a ser salvo
+       plot = mapaBiooc,    # nome do objeto que você quer salvar
+       width = 10,          # largura em pixels da imagem
+       height = 8,         # altura em pixels da imagem
+       dpi = 300)          # qualidade da imagem
+
+#     3.4 - Mapa de distribuição de espécies com raster ----------------------------
+
+#Agora vamos repetir o processo, mas com o mapa de temperatura para entender como
+#a espécie alvo se distribui de acordo com a temperatura
+
+#Como estamos trabalhando na escala a nível de Brasil, vamos recortar o raster 
+extensao_brasil <- extent(-74, -34, -34, 5)                    # a função extent recorta o raster de acordo com as coordenadas
 
 # Cortar na região alvo
 temp_BR <- crop(temp, extensao_brasil)
 
-
+#Vamos refazer o mapa de temperatura, mas agora usando a região recortada
 mapa_tempBR <- tm_shape(temp_BR) +
   tm_raster(palette = "Oranges",
             title = "Temperatura média anual") +
-  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "black")
+  tm_scale_bar(position = c("left", "bottom"), 
+               width = 0.15, 
+               color.dark = "black") +
+  tm_compass(position = c("right", "top"), 
+             size = 2)
 
-teste <- mapa_tempBR +
-  tm_shape(teste2) +
-  tm_dots(size = 0.5)
+#Verificando como ficou o mapa:
+mapa_tempBR
 
-teste4 <- teste +
+#Vamos acrescentar os limites do território brasileiro pra ficar mais fácil de visualizar
+mapa_tempBR <- mapa_tempBR +
   tm_shape(BR) +
   tm_borders(lwd = 2,
              col = "black")
 
-#corrigir o posicionamento: CRS
+#Verificando como ficou o mapa:
+mapa_tempBR
 
-sf::st_crs(BR)
+#Esquecemos de uma etapa importante: O CRS!!!!
+st_crs(BR) == st_crs(temp_BR)
 
-#     3.5 PRÁTICA -----------------------------------------------------------------------
+#Como estamos trabalhando com a América do Sul, vamos converter o raster de WGS84 para SIRGAS2000
+temp_BR <- projectRaster(temp_BR, crs = 4674)
+
+#Vamos testar se deu certo??
+st_crs(BR) == st_crs(temp_BR)
+
+#Agora precisamos refazer as etapas anteriores
+mapa_tempBR <- tm_shape(temp_BR) +
+  tm_raster(palette = "Oranges",
+            title = "Temperatura média anual") +
+  tm_scale_bar(position = c("left", "bottom"), 
+               width = 0.15, 
+               color.dark = "black") +
+  tm_compass(position = c("right", "top"), 
+             size = 2)
+
+mapa_tempBR <- mapa_tempBR +
+  tm_shape(BR) +
+  tm_borders(lwd = 2,
+             col = "black")
+
+#Verificando como ficou o mapa agora:
+mapa_tempBR
+
+#Agora sim podemos adicionar a camada dos pontos, que já está em SIRGAS 2000
+mapa_tempBR <- mapa_tempBR +
+  tm_shape(occs_BR) +
+  tm_dots(size = 0.5)
+
+#Vamos ver como ficou
+mapa_tempBR
+
+#Agora é só salvar!!
+tmap_save(
+  tm = mapa_tempBR, 
+  filename = "./Oxysarcodexia_temp.png", 
+  width = 3000, 
+  height = 2800)
 
 # 4. Resumir dados de ocorrências por unidade padronizada -------------------------------
+
+#Minha pergunta agora é: quantas espécies de Tangarás já foram amostradas na Mata Atlântica
+#E em quais partes?
+
+#BORA RESPONDER ESSA DOIDERA baseado no livro Análises Ecológicas no R
+
+# 4.1 Baixar dados do GBIF ---------------------------------------------------------------
+gbif2 <- occ_data(genusKey = 2487764)      #puxa os dados do gbif do gênero Chiroxiphia
+
+tang <- gbif2$data                           #extrai os dados dos metadados
+
+tang <- tang %>%                                                        
+  dplyr::select(scientificName, decimalLatitude, decimalLongitude) %>%  # selecionamos o nome, a latitude e a longitude de acordo com os nomes do gbif para reter apenas essas colunas
+  dplyr::filter(!is.na(decimalLatitude))                                # filtramos apenas as linhas que tem a coluna de latitude preenchida
+
+tang <- tang %>%
+  st_as_sf(coords = c("decimalLongitude", "decimalLatitude"),           #associando geometria aos pontos
+           remove = FALSE)
+
+tang <- st_set_crs(tang, 4674)                                          #associando um CRS
+
+#4.2 Obtendo os limites da Mata Atlântica -----------------------------------------------------
+
+#nós já baixamos os limites dos biomas no objeto Biomas
+plot(Biomas$geom)
+
+#agora vamos criar um novo objeto apenas com a mata atlantica
+ma <- Biomas %>% 
+  dplyr::filter(name_biome == "Mata Atlântica")
+
+#4.3 Vizualizar nossos dados com o tmap -------------------------------------------------
+
+tm_shape(ma,                                #puxa os dados amazonia
+         bbox = tang) +                           #puxa os dados dos pontos
+  tm_polygons() +                                 #plota a base da amazonia
+  tm_shape(tang) +                                #plota os pontos
+  tm_dots(size = .1, col = "forestgreen")         #muda os pontos para serem verdes
+
+#4.4 Retirar os dados que caem fora da Mata Atlântica ------------------------------------
+
+tang_BR <- st_intersection(tang, ma)             #recorta as ocorrência com os limites do shp
+
+#Vamos ver como ficou agora no mapa:
+tm_shape(ma,                                
+         bbox = tang_BR) +                         
+  tm_polygons() +                                 
+  tm_shape(tang_BR) +                               
+  tm_dots(size = .1, col = "forestgreen")
+
+#4.5 Criar um grid de hexagonos para a Mata Atlântica --------------------------------
+
+#Para resumir os dados por unidade amostral, precisamos criar as unidades amostrais em si
+#Nesse caso, usaremos pequenos hexágonos para entender a distribuição dos Tangaras
+
+ma_hex <- sf::st_make_grid(x = ma,                #st_make_grid cria o grid
+                           cellsize = 1,
+                           square = FALSE) %>% 
+                           sf::st_as_sf() %>%     #essa função transforma em geometria (já usamos ela!)                    
+  dplyr::mutate(areakm2 = sf::st_area(.)/1e6) %>% #aqui nós vamos dizer a área de cada hexagono
+  tibble::rowid_to_column("id_hex")               #por fim, adicionamos um identificador a cada hexagono
+
+
+#agora, precisamos selecionar os hexágonos que caem na Mata Atlântica
+ma_hex <- ma_hex[ma, ]
+
+#Vamos conferir os hexágonos 
+tm_shape(ma,                                      #puxa os dados do vetor da mata atlantica
+         bbox = ma_hex) +                         #puxa o grid hexagonal
+  tm_polygons() +                                 #cria o fundo da mata atlantica
+  tm_shape(ma_hex) +                              #seleciona apenas o grid
+  tm_borders()                                    #seleciona só a borda do grid
+
+#4.6 Unir as informações das espécies com os hexágonos ----------------------------------
+
+#Para isso usaremos um "join" espacial do pacote sf
+ma_hex_sp <- sf::st_join(x = ma_hex,              #x é a planilha que juntará os dados
+                         y = tang_BR,             #y é a planilha que será juntada
+                         left = TRUE)
+
+#Agora que juntamos as informações espaciais de ocorrência das espécies com os hexágonos,
+#nós precisamos resumir elas por cada unidade amostral
+
+ma_hex_oco_riq <- ma_hex_sp %>%
+  dplyr::group_by(id_hex) %>% 
+  dplyr::summarise(ocorrencias = length(scientificName[!is.na(scientificName)]),
+                   riqueza = n_distinct(scientificName, na.rm = TRUE))
+
+#Agora vamos visualizar como ficou isso no resultado final
+
+# Mapa com número de ocorrências
+mapa_oco <- tm_shape(ma_hex_oco_riq) +
+  tm_polygons(title = "Ocorrência de Chiroxiphia",
+              col = "ocorrencias", 
+              pal = "viridis",
+              style = "pretty") +
+  tm_text("ocorrencias", size = .4) +
+  tm_graticules(lines = FALSE) +
+  tm_compass() +
+  tm_scale_bar() +
+  tm_layout(legend.title.size = 2,
+            legend.title.fontface = "bold",
+            legend.position = c("left", "top"))
+
+mapa_oco
+
+# Mapa com riqueza de espécies
+mapa_riq <- tm_shape(ma_hex_oco_riq) +
+  tm_polygons(title = "Riqueza de Chiroxiphia",
+              col = "riqueza", 
+              pal = "viridis",
+              style = "cat") +
+  tm_text("riqueza", size = .4) +
+  tm_graticules(lines = FALSE) +
+  tm_compass() +
+  tm_scale_bar() +
+  tm_layout(legend.title.size = 2,
+            legend.title.fontface = "bold",
+            legend.position = c("left", "top"))
+
+mapa_riq
+
+#Juntar os dois mapas
+arranjo <- tmap_arrange(mapa_oco, mapa_riq)
+
+#Verificar o resultado final
+arranjo
+
+#Salvar o mapa 
+tmap_save(
+  tm = arranjo, 
+  filename = "./Tangara_riq_oco.png", 
+  width = 3000, 
+  height = 2800)
+
+#AGORA QUE ESTÃO COM O CÉREBRO FRITO, BORA LANCHAR E ATÉ AMANHÃ!!
