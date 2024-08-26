@@ -463,7 +463,7 @@ arranjo
 tmap_save(
   tm = arranjo, 
   filename = "./Tangara_riq_oco.png", 
-  width = 3000, 
+  width = 4500, 
   height = 2800)
 
 #AGORA QUE ESTÃO COM O CÉREBRO FRITO, BORA LANCHAR E ATÉ AMANHÃ!!
