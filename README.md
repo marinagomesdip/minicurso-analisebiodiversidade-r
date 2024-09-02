@@ -37,6 +37,8 @@ Será necessárioa utilização de notebook ou desktop
 
 [Aula 2](https://drive.google.com/file/d/1ICTJYpp_V0zw7IhIc5LrNDqc_G6-sv4k/view?usp=drive_link)
 
+[Aula 4](https://drive.google.com/file/d/1liiN2vu8E5YCYQPGtjyKpmriGy4COrJp/view?usp=drive_link)
+
 ## Scripts
 
 [Aula 2 - Gráficos](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%20%202%20-%20Gr%C3%A1ficos.R) <br>
