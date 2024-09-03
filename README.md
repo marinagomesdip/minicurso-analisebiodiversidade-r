@@ -48,3 +48,9 @@ Será necessárioa utilização de notebook ou desktop
 ## Tutoriais
 
 [Tutorial Instalação e Conexão GitHub](https://drive.google.com/file/d/1eor5LsZhal5-l2ZYjXWPTXCNQyFm3S1n/view?usp=drive_link)
+
+
+##FEEDBACK
+Por favor, ao terminar o minicurso, me diga o que você achou dele, para que possa melhora-lo. 
+
+[Feedback](https://forms.gle/xi1z9SwBJ4a1HVx97)
