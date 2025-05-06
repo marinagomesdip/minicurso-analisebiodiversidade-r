@@ -51,6 +51,12 @@ ggsave("Grafico1.png",     # nome do arquivo a ser salvo
        height = 4,         # altura em pixels da imagem
        dpi = 300)          # qualidade da imagem
 
+#PARA SABER ONDE FICOU SALVO!!!
+#para saber onde está sendo salvo, use a função
+getwd()
+
+#caso queira mudar essa pasta:
+#setwd("C:/Users/SeuUsuario/Documents/Projeto")
 
 # 5.2 PERGUNTA 2: A RELAÇÃO MAIOR MASSA CORPORAL COM MAIOR BICO VARIA COM A ESPÉCIE? ----
 #Para responder a essa pergunta, precisamos acrescentar uma terceira variável ao gráfico
@@ -103,6 +109,7 @@ ggplot(data = pinguins) +
              alpha = 0.9)
 
 # 5.3 ERRO COMUNS: ----------------------------------------------------------------------
+# + fora do lugar!!!
 ggplot(data = pinguins)       
 +  geom_point(mapping = aes(x = massa_corporal, y = comprimento_bico, size = especie))
 
@@ -287,23 +294,23 @@ grilos <- read_csv("./Dados/Grilos_saltos.csv")
 
 
 #Resposta prática 4:
-ggplot(data = dados, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
+ggplot(data = grilos, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
   geom_point()
 
-ggplot(data = dados, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
+ggplot(data = grilos, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
   geom_smooth()
 
-ggplot(data = dados, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
+ggplot(data = grilos, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
   geom_smooth(mapping = aes(color = sexo))
 
-ggplot(data = dados, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
+ggplot(data = grilos, mapping = aes(x = tamanho_perna, y = altura_salto)) + 
   geom_smooth(mapping = aes(color = especie))
 
-ggplot(data = dados, mapping = aes(x = sexo, y = comprimento_corpo)) + 
+ggplot(data = grilos, mapping = aes(x = sexo, y = comprimento_corpo)) + 
   geom_boxplot()
 
-ggplot(data = dados, mapping = aes(x = sexo, y = comprimento_corpo,
+ggplot(data = grilos, mapping = aes(x = sexo, y = comprimento_corpo,
                                    color = especie)) + 
   geom_boxplot()
 
-# 5.12 - FIMMMMMM BORA LANCHAR E SER FELIZ AGORA QUE VOCÊ SABE FAZER GRÁFICOS NO R ----
+# 5.12 - FIMMMMMM BORA ALMOÇAR E SER FELIZ AGORA QUE VOCÊ SABE FAZER GRÁFICOS NO R ----

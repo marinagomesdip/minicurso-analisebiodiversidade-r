@@ -15,7 +15,7 @@ install.packages('sf')   # instalando o pacote 'sf'
 library(sf)                # Carregando o pacote.
 
 # 3. CRIANDO MAPAS -------------------------------------------------------------------
-#     3.1 - Mapas com formato shp usando geobr ---------------------------------------
+#     3.1 - Mapa dos biomas brasileiros (shp) + geobr ---------------------------------------
 
 install.packages('geobr')   # instalando o pacote 'geobr'.
 
@@ -66,7 +66,7 @@ mapaBR <- ggplot() +
 
 mapaBR
 
-# Plotando o mapa do Brasil com o mapa da Amazônia Legal:
+# Plotando o mapa do Brasil com os biomas brasileiros:
 mapaBR.Bioma <- mapaBR +          # Objeto com o mapa do Brasil.
   geom_sf(data = Biomas)          # Dados dos Biomas brasileiros.
 
@@ -96,6 +96,7 @@ mapaBR.Bioma
 install.packages('ggspatial')     # instalando o pacote 'ggspatial'.
 
 library(ggspatial)                # Carregando o pacote.
+library(grid)                     # Carregando pacote adicional da base R para evitar erros
 
 #Acrescentando elementos obrigatórios
 mapaBR.Bioma2 <- mapaBR.Bioma +          
@@ -123,7 +124,7 @@ ggsave("Mapa_shapefile.png",     # nome do arquivo a ser salvo
        dpi = 300)          # qualidade da imagem
 
 
-#     3.2 - Mapas com formato raster ---------------------------------------------
+#     3.2 - Mapa da temperatura média anual (raster) ---------------------------------------------
 
 #Vamos importar o raster da nossa pasta
 
@@ -150,17 +151,20 @@ mapa_temp <- tm_shape(temp) +
 
 mapa_temp
 
-
+# A paleta de cores padrão não favorece entender o que a gente quer, que tal mudar?
 mapa_temp <- tm_shape(temp) +
   tm_raster(palette = "Oranges") 
 
 mapa_temp
 
 mapa_temp <- tm_shape(temp) +
-  tm_raster(palette = "Oranges",
-            title = "Temperatura média anual") +
-  tm_scale_bar(position = c("left", "bottom"), width = 0.15, color.dark = "black") +
-  tm_compass(position = c("right", "top"), size = 2)
+  tm_raster(palette = "Oranges",                    #paleta de cores laranja
+            title = "Temperatura média anual") +    #título do mapa
+  tm_scale_bar(position = c("left", "bottom"),      #posição da escala
+               width = 0.15,                        #tamanho da escala
+               color.dark = "black") +              #cor da parte escura da escala
+  tm_compass(position = c("right", "top"),          #posição da seta norte
+             size = 2)                              #tmanho da seta norte
 
 mapa_temp
 
@@ -172,7 +176,7 @@ tmap_save(
 )
 
 
-#     3.3 - Mapa das espécies por bioma com shp ---------------------------------
+#     3.3 - Mapa das espécies por bioma (shp) ---------------------------------
 
 #Vamos fazer agora o que a maioria das pessoas precisa para um trabalho ou artigo: mapa
 #de distribuição de espécies com alguma variável (nesse caso, o bioma)
@@ -256,13 +260,13 @@ ggsave("Oxysarcodexia_biomas.png",     # nome do arquivo a ser salvo
        height = 8,         # altura em pixels da imagem
        dpi = 300)          # qualidade da imagem
 
-#     3.4 - Mapa de distribuição de espécies com raster ----------------------------
+#     3.4 - Mapa de distribuição de espécies (raster) ----------------------------
 
 #Agora vamos repetir o processo, mas com o mapa de temperatura para entender como
 #a espécie alvo se distribui de acordo com a temperatura
 
 #Como estamos trabalhando na escala a nível de Brasil, vamos recortar o raster 
-extensao_brasil <- extent(-74, -34, -34, 5)                    # a função extent recorta o raster de acordo com as coordenadas
+extensao_brasil <- extent(-74, -34, -34, 5)                    # a função extent cria uma área de raster pra ser recortada
 
 # Cortar na região alvo
 temp_BR <- crop(temp, extensao_brasil)
@@ -417,7 +421,7 @@ ma_hex_sp <- sf::st_join(x = ma_hex,              #x é a planilha que juntará 
 ma_hex_oco_riq <- ma_hex_sp %>%
   dplyr::group_by(id_hex) %>% 
   dplyr::summarise(ocorrencias = length(scientificName[!is.na(scientificName)]),
-                   riqueza = n_distinct(scientificName, na.rm = TRUE))
+                   riqueza = dplyr::n_distinct(scientificName, na.rm = TRUE))
 
 #Agora vamos visualizar como ficou isso no resultado final
 
@@ -466,4 +470,4 @@ tmap_save(
   width = 4500, 
   height = 2800)
 
-#AGORA QUE ESTÃO COM O CÉREBRO FRITO, BORA LANCHAR E ATÉ AMANHÃ!!
+#AGORA QUE ESTÃO COM O CÉREBRO FRITO, BORA ALMOÇAAAAAR!!!
