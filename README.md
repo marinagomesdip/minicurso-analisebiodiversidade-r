@@ -31,21 +31,17 @@ Será necessárioa utilização de notebook ou desktop
 
 [Aula 1 - Gráficos](https://drive.google.com/file/d/13OLXXMcH7eZDLlnnMKKl3CtRboyoulr5/view?usp=sharing)
 
-[Aula 3](https://drive.google.com/file/d/16SY17GBHTw0U_WtdGpIXlEIm7wnOSGv5/view?usp=drive_link)
+[Aula 2 - Geoespacial](https://drive.google.com/file/d/16SY17GBHTw0U_WtdGpIXlEIm7wnOSGv5/view?usp=drive_link)
 
 ## Práticas
 
-[Pasta Resultados](https://drive.google.com/drive/folders/1gcxnPPJU8JWBm-2Ek7fhLltbvdE6LUAK?usp=drive_link)
-
-[Aula 2](https://drive.google.com/file/d/1ICTJYpp_V0zw7IhIc5LrNDqc_G6-sv4k/view?usp=drive_link)
-
-[Aula 4](https://drive.google.com/file/d/1liiN2vu8E5YCYQPGtjyKpmriGy4COrJp/view?usp=drive_link)
+[Aula Gráficos](https://drive.google.com/file/d/1ICTJYpp_V0zw7IhIc5LrNDqc_G6-sv4k/view?usp=drive_link)
 
 ## Scripts
 
-[Aula 2 - Gráficos](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%20%202%20-%20Gr%C3%A1ficos.R) <br>
+[Aula 1 - Gráficos](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%20%202%20-%20Gr%C3%A1ficos.R) <br>
 
-[Aula 3 - Dados geoespaciais](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%203%20-%20Dados%20Geoespaciais.R) <br>
+[Aula 2 - Dados geoespaciais](https://github.com/marinagomesdip/minicurso-analisebiodiversidade-r/blob/main/Scripts/Aula%203%20-%20Dados%20Geoespaciais.R) <br>
 
 ## Tutoriais
 
